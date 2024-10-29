@@ -1,5 +1,21 @@
-<%= form_with model: [@post, Comment.new] do |form|%>
-Yout comment:<br>
-<%= form.text_area :content, size:"20x5"%><br>
-<%= form.submit%>
+<%= form_with(model: [post, comment || post.comments.build]) do |form| %>
+  <% if comment&.errors&.any? %>
+    <div style="color: red">
+      <p><%= pluralize(comment.errors.count, "error") %> Comment cannot be empty:</p>
+      <ul>
+        <% comment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :content, "Your Comment:", style: "display: block" %>
+    <%= form.text_area :content %>
+  </div>
+
+  <div>
+    <%= form.submit "Add Comment" %>
+  </div>
 <% end %>

@@ -1,7 +1,6 @@
 <h2>Comments</h2>
 <div>
-    <%# Expands to render partial: "comments/comment", collection: post.comments %>
-    <%= render post.comments%>
+  <%= render partial: "comments/comment", collection: post.comments, as: :comment %>
 </div>
 
-<%= render "comments/new", post: post %>
+<%= render "comments/new", post: post, comment: @comment %>

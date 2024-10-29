@@ -2,9 +2,14 @@ class CommentsController < ApplicationController
   before_action :set_post
 
   def create
-    comment = @post.comments.create!(params.require(:comment).permit(:content))
-    CommentsMailer.submitted(comment).deliver_later
-    redirect_to @post
+    @comment = @post.comments.build(params.require(:comment).permit(:content))
+
+    if @comment.save
+      CommentsMailer.submitted(@comment).deliver_later
+      redirect_to @post
+    else
+      render 'posts/show', locals: { comment: @comment }, status: :unprocessable_entity
+    end
   end
 
   private
